@@ -1,0 +1,46 @@
+.parent {
+    text-align: center;
+}
+.child {
+    display: inline-block;
+    padding: 1rem 1rem;
+    vertical-align: middle;
+}
+#button{
+    border: 2px solid black;
+    background-color: salmon;
+}
+.childhead {
+    display: inline-block;
+    padding: 1rem 1rem;
+    vertical-align: middle;
+    border: 2px solid black;
+    background-color: yellow;
+    color: black;
+    width: 7%;
+}
+.neutral {
+    display: inline-block;
+    padding: 1rem 1rem;
+    vertical-align: middle;
+    border: 2px solid black;
+    background-color: white;
+    color: white;
+    width: 7%;
+}
+.right {
+    display: inline-block;
+    padding: 1rem 1rem;
+    vertical-align: middle;
+    border: 2px solid black;
+    background-color: lightgreen;
+    width: 7%;
+}
+.wrong {
+    display: inline-block;
+    padding: 1rem 1rem;
+    vertical-align: middle;
+    border: 2px solid black;
+    background-color: lightcoral;
+    width: 7%;
+}
