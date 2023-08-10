@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "polar bear",
+        "diet": "omnivore",
+        "type": "mammal",
+        "habitat": "tundra",
+        "species": "ursidae",
+        "pet" : false,
+        "hint": "The largest of its species"
+    },
+    {
+        "id": 2,
+        "name": "dog",
+        "diet": "omnivore",
+        "type": "mammal",
+        "habitat": "other",
+        "species": "canine",
+        "pet" : true,
+        "hint": "the most common pet in the world"
+    },
+    {
+        "id": 3,
+        "name": "horse",
+        "diet": "omnivore",
+        "type": "mammal",
+        "habitat": "other",
+        "species": "Artiodactyla",
+        "pet" : true,
+        "hint": "the most common pet in the world"
+    }
+]

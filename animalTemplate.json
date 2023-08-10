@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "name": "polar bear", // answer. bear,monkey,dog, etc
+        "diet": "omnivore", // omnivore herbavore carnivore
+        "type": "mammal", //mamal reptile etc
+        "habitat": "forest", // dessert,jungle,forest,tundra,ocean,water,other, savvana
+        "species": "bear", //bird,feline,canine,equine,primate,  ?(fish,bird)
+        "landOrWater": "land", // land water both
+        "pet" : true,  // true or false. is it kept as a pet
+        "dificulty": 3 ,  //1-5? 
+        "hint": "Said to love honey"
+        
+    }
+]
