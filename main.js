@@ -1,19 +1,20 @@
-answer = {
-    name: "bear",
-    diet: "omnivore",
-    type: "mammal",
-    habitat: "forest",
-    species: "ursidae",
-    pet: false
-}
-guess = {
-    name: "dog",
-    diet: "omnivore",
-    type: "mammal",
-    habitat: "other",
-    species: "canine",
-    pet: true
-}
+answer =[
+    {
+        name: "bear",
+        diet: "omnivore",
+        type: "mammal",
+        habitat: "forest",
+        species: "ursidae",
+        pet: false},
+     {
+        name: "dog",
+        diet: "omnivore",
+        type: "mammal",
+        habitat: "other",
+        species: "canine",
+        pet: true
+    }
+] 
 guesses = 1
 let won = false
 
@@ -27,22 +28,23 @@ const incorrectHabitats = []
 const correctSpecies = []
 const incorrectSpecies = [] 
 
-
-
 const guessButton = document.getElementById("button")
 const guessesDiv = document.getElementById("guesses")
+let intRand = Math.floor(Math.random() * 2);
 
-button.addEventListener('click', () => {
+guessButton.addEventListener('click', () => {
     if(!won){
-    console.log("input was")
-    let val = document.querySelector('input').value;
-    console.log(val)
-    if(val === "bear"){
-        checkGuess(answer,answer)
-    }else if(val === "dog"){
-        checkGuess(guess,answer)
-    }
-}
+        console.log("input was")
+        let val = document.querySelector('input').value;
+        console.log(val)
+        ruleSystem(val,answer,intRand)
+        console.log(answer)
+        // if(val === "bear"){
+        //     checkGuess(answer,answer)
+        // }else if(val === "dog"){
+        //     checkGuess(guess,answer)
+        // }
+        }
     
 })
 
@@ -54,6 +56,7 @@ button.addEventListener('click', () => {
 
 function checkGuess(guess,answer){
     let matches = [false,false,false,false,false,false]
+    console.log(guess)
     if(guess["name"] === answer["name"]){
         for (let i = 0; i < matches.length; i++) {
             matches[i] = true
@@ -187,6 +190,28 @@ function setGuessAttributes(animal,matches){
     newPet.id = "pet";
     newPet.className = "neutral"
     newParent.appendChild(newPet);
+    
+}
+function ruleSystem(quess,answers,intRands){
+    let intNum = 0
+    
+    console.log(answers.length)
+    for (i = 0; i<answers.length;i++){
+        if(quess===answers[i]["name"]){
+            trueQuess = answers[i]
+            intNum++;
+            checkGuess(trueQuess,answers[intRands])
+            continue;
+            
+        }        
+        console.log("guess:" +quess)
+        console.log("answer:"+answers)
+    }
+    if(intNum==0){
+        console.log("guess:" +quess)
+        console.log("answer:"+answers["name"])
+        console.log("incorrect")
+    }
     
 }
 
