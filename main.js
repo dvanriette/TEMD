@@ -1,22 +1,41 @@
-answer =[
-    {
-        name: "bear",
-        diet: "omnivore",
-        type: "mammal",
-        habitat: "forest",
-        species: "ursidae",
-        pet: false},
-     {
-        name: "dog",
-        diet: "omnivore",
-        type: "mammal",
-        habitat: "other",
-        species: "canine",
-        pet: true
-    }
-] 
+var animalList =[
+        {
+            "id": 1,
+            "name": "polar bear",
+            "diet": "omnivore",
+            "type": "mammal",
+            "habitat": "tundra",
+            "species": "ursidae",
+            "pet" : false,
+            "hint": "The largest of its species"
+        },
+        {
+            "id": 2,
+            "name": "dog",
+            "diet": "omnivore",
+            "type": "mammal",
+            "habitat": "other",
+            "species": "canine",
+            "pet" : true,
+            "hint": "the most common pet in the world"
+        }//,
+        // {
+        //     "id": 3,
+        //     "name": "horse",
+        //     "diet": "omnivore",
+        //     "type": "mammal",
+        //     "habitat": "other",
+        //     "species": "Artiodactyla",
+        //     "pet" : true,
+        //     "hint": "the most common pet in the world"
+        // }
+    ]
+//const axios = require('axios');
 guesses = 1
+guessThreshold = 5
 let won = false
+var answer = animalList[0]
+let hintBox = document.getElementById("hintbox")
 
 const incorrectNames = []
 const correctDiets = []
@@ -27,26 +46,118 @@ const correctHabitats = []
 const incorrectHabitats = []
 const correctSpecies = []
 const incorrectSpecies = [] 
+const date = new Date()
+
+let dom= date.getDate()
+dt2 = {}
+dateString = dom.toString()
+getAnimals()
+async function getAnimals(){
+    //animalList = await fetch("http://localhost:5200/animals").then(console.log(animalList))
+    //await fetch("http://localhost:5200/animals").then((response) =>{
+    //    console.log(response.json())
+    //})
+    
+    const fetchPromise = fetch("http://localhost:5200/animals");
+    fetchPromise.then(response => {
+        return response.json() })
+        .then(animals=>{
+            //console.log(animals)
+            animalList = animals
+            const datePromise = fetch("http://localhost:5200/gd");
+            datePromise.then(response => {
+            return response.json() })
+            .then(gd=>{
+                dt2 = gd
+                //console.log(dt2['currentDate'])
+                if(!(dateString === dt2['currentDate'])){
+                    answer = animalList[Math.floor(Math.random() * animalList.length)]
+                    console.log(answer)
+                    postData()
+                }else{
+                    console.log(dateString)
+                    console.log(dt2['currentDate'])
+                    console.log('else')
+                    const newAnimalPromise = fetch("http://localhost:5200/gd");
+                    newAnimalPromise.then(response => {
+                    return response.json() })
+                    .then(newgd=>{
+                        animalList.forEach(element => {
+                            if(element["name"] == (newgd["answerName"][0])){
+                                answer = element
+                            }
+                        })
+                    
+                    })
+                }
+            })
+            button.addEventListener('click', () => {
+                if(!won){
+                console.log("input was")
+                let val = document.querySelector('input').value;
+                console.log(val)
+                    ruleSystem(val,answer)
+                }
+            })
+            
+        })
+    
+     //answer = animalList[Math.floor(Math.random() * animalList.length)]
+}
+//let data = {
+//    currentDate: dateString,
+//    answerName: [answer['name']],
+//    id: "1"
+//    }
+// function updateDate(){ // need to be able to send a patch request. if we can find out how to import axios its free
+//     axios.patch("http://localhost:5200/gd/update", {
+//         currentDate: dateString,
+//         answerName: [answer['name']],
+//         id: "1"
+//     })
+
+// }
+async function postData() {
+    let data = {
+            currentDate: dateString,
+            answerName: [answer['name']],
+            id: "1"
+        }
+    //let url = "http://localhost:5200/gd/update"
+
+    // Default options are marked with *
+    const response = await fetch("http://localhost:5200/gd/update", {
+        method: "PATCH", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(data), // body data type must match "Content-Type" header
+    })
+    
+    //console.log(response.json())
+    //return response.json(); // parses JSON response into native JavaScript objects
+}
+
 
 const guessButton = document.getElementById("button")
 const guessesDiv = document.getElementById("guesses")
-let intRand = Math.floor(Math.random() * 2);
 
-guessButton.addEventListener('click', () => {
-    if(!won){
-        console.log("input was")
-        let val = document.querySelector('input').value;
-        console.log(val)
-        ruleSystem(val,answer,intRand)
-        console.log(answer)
-        // if(val === "bear"){
-        //     checkGuess(answer,answer)
-        // }else if(val === "dog"){
-        //     checkGuess(guess,answer)
-        // }
-        }
+// button.addEventListener('click', () => {
+//     if(!won){
+//     console.log("input was")
+//     let val = document.querySelector('input').value;
+//     console.log(val)
+//         ruleSystem(val,answer)
+//     }
+// })
     
-})
+
 
 // button.addEventListener('click', () => {
 //     checkGuess(guess,answer)
@@ -56,7 +167,6 @@ guessButton.addEventListener('click', () => {
 
 function checkGuess(guess,answer){
     let matches = [false,false,false,false,false,false]
-    console.log(guess)
     if(guess["name"] === answer["name"]){
         for (let i = 0; i < matches.length; i++) {
             matches[i] = true
@@ -64,6 +174,12 @@ function checkGuess(guess,answer){
         winGame()
         //winGame //user.setWon(true)
     }else {
+        if(guesses > guessThreshold - 1 ){
+            hintBox.innerHTML = answer["hint"]
+            hintBox.style.backgroundColor="yellow"
+        }else{
+            hintBox.innerHTML = "?<br>gueses until hint: " + (guessThreshold - guesses)
+        }
         if (guess["diet"] === answer["diet"]){
             matches[1] = true
             correctDiets.push(guess["diet"])
@@ -192,24 +308,23 @@ function setGuessAttributes(animal,matches){
     newParent.appendChild(newPet);
     
 }
-function ruleSystem(quess,answers,intRands){
+
+function ruleSystem(quess,CorrectAnswer){
     let intNum = 0
     
-    console.log(answers.length)
-    for (i = 0; i<answers.length;i++){
-        if(quess===answers[i]["name"]){
-            trueQuess = answers[i]
+    for (i = 0; i<animalList.length;i++){
+        if(quess===animalList[i]["name"]){
+            trueQuess = animalList[i]
             intNum++;
-            checkGuess(trueQuess,answers[intRands])
+            checkGuess(trueQuess,CorrectAnswer)
             continue;
             
         }        
         console.log("guess:" +quess)
-        console.log("answer:"+answers)
     }
     if(intNum==0){
         console.log("guess:" +quess)
-        console.log("answer:"+answers["name"])
+        console.log("answer:"+animalList["name"])
         console.log("incorrect")
     }
     
@@ -220,6 +335,6 @@ function winGame(){
     let winText = document.createElement("div")
     winText.className = "parent"
     winText.id = "current"
-    winText.innerHTML = "Congrats! You guessed it in" + guesses + " tries"
+    winText.innerHTML = "Congrats! You guessed it in " + guesses + " tries"
     document.body.appendChild(winText)
     }
