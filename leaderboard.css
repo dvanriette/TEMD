@@ -1,0 +1,43 @@
+body {
+    background-color: beige;
+}
+
+h1{
+    font-family: cursive;
+    font-size: 50px;
+    margin:auto;
+    text-align: center;
+    padding: 10px;
+}
+
+p{
+    text-align: center;
+    font-family: cursive;
+    font-size: 25px;
+}
+
+table {
+    width: 50%;
+    margin:auto
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+tr {
+    
+}
+
+.plcNum {
+    width: 10%;
+    padding: 10px;
+
+}
+
+#leadrTable{
+    width: 50%;
+    padding: 5%;
+}
