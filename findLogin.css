@@ -1,0 +1,38 @@
+.create{
+    width: 30%;  
+    border:ridge black;
+    background-color: lightcyan;
+    
+}
+#create:hover{
+    cursor: pointer;
+}
+body{
+    margin:10% 40%;
+    background-color: gray;
+}
+h1{
+    margin: 5% 1%;
+    font-size: 400%;
+}
+div{
+    margin: 15% 15% 15% 15%;
+}
+.loginBtn{
+    width: 13%;  
+    border:ridge black;
+    background-color: lightcyan;
+    
+}
+#loginBtn:hover{
+    cursor: pointer;
+}
+.home{
+    width: 25%;  
+    border:ridge black;
+    background-color: lightcyan;
+    
+}
+#home:hover{
+    cursor: pointer;
+}
