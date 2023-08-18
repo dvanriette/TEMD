@@ -31,13 +31,29 @@ tr {
     
 }
 
+button{
+    padding: 25px 45px 25px 45px;
+    border-radius: 50px;
+    background-color: chocolate;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: orange;
+}
+
 .plcNum {
     width: 10%;
     padding: 10px;
-
 }
 
 #leadrTable{
     width: 50%;
     padding: 5%;
+}
+
+#homeBtn{
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 5%;
 }
