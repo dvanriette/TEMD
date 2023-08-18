@@ -1,0 +1,41 @@
+<head>
+    <title>Animaldle</title>
+    <link href="main.css" rel="stylesheet">
+
+    <script src="main.js" defer></script>
+    <style>
+    body {
+    font-family: 'Lato', sans-serif;
+}
+</style>
+</head>
+<body>
+<header>
+    <h1 id="center">Welcome to Game</h1>
+</header>
+<div class='parent'>
+    <label class='child' id="guessBox" for="Name">Guess:</label>
+    <input type="text" id="Name" name="Name">
+    <div class='child' id="button">submit</div>
+</div>
+<div class='parent'>
+    <div class='childHead'>name</div>
+    <div class='childHead'>diet</div>
+    <div class='childHead'>type</div>
+    <div class='childHead'>habitat</div>
+    <div class='childHead'>species</div>
+    <div class='childHead'>pet</div>
+</div>
+<div id = 'guesses'>
+<div class='parent' id="current">
+    <div class='childHead' id="name">?</div>
+    <div class='neutral' id="diet">diet</div>
+    <div class='neutral' id="type">type</div>
+    <div class='neutral' id="habitat">habitat</div>
+    <div class='neutral' id="species">species</div>
+    <div class='neutral' id="pet">pet</div>
+</div>
+</div>
+<div id="hintbox">?<br>gueses until hint: 5</div>
+
+</body>
