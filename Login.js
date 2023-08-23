@@ -30,19 +30,18 @@ fetchPromise.then(response => {
         console.log(usersList)
         if(userData){
             userData.addEventListener('click', handleInput)
-            }
-        if(userCreate){
-            userCreate.addEventListener('click',createPerson) 
         }
-        //newUser = createPerson()
-        //addNewUser(newUser)
+        if(userCreate){
+            userCreate.addEventListener('click', createPerson)
+        }
+        
+        
         
     })
 
     function createPerson(evt) {
         let username = userNameData.value;
         let password = passwordData.value;
-    
         const person = {
             username: username,
             password: password,
@@ -51,7 +50,11 @@ fetchPromise.then(response => {
             won: false,
             dateOfLastLogin: ""
      };
-     addNewUser(person)
+     if(!username === "" && !password=== ""){
+        addNewUser(person)
+        window.location= "prototype.html"
+     }
+     
     }
 async function addNewUser(userJson){
     const response = await fetch("http://localhost:5200/users/insert", {
