@@ -20,6 +20,7 @@ var usersList = [{
 const userData = document.getElementById('submit');
 const userNameData = document.getElementById('userName');
 const passwordData = document.getElementById('passWord');
+const userCreate = document.getElementById('create')
 const fetchPromise = fetch("http://localhost:5200/users");
 fetchPromise.then(response => {
     return response.json() })
@@ -29,7 +30,10 @@ fetchPromise.then(response => {
         console.log(usersList)
         if(userData){
             userData.addEventListener('click', handleInput)
-            }
+        }
+        if(userCreate){
+            userCreate.addEventListener('click', createPerson)
+        }
         newUser = createPerson
         addNewUser(newUser)
         
