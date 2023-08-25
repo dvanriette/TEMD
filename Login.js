@@ -39,7 +39,7 @@ fetchPromise.then(response => {
         
     })
 
-    function createPerson(evt) {
+    async function createPerson(evt) {
         let username = userNameData.value;
         let password = passwordData.value;
         const person = {
@@ -49,13 +49,35 @@ fetchPromise.then(response => {
             guesses: [],
             won: false,
             dateOfLastLogin: ""
-     };
-     if(!username === "" && !password=== ""){
+    };
+    console.log('here')
+    if(username != "" & password != ""){
+        let newPerson = {
+            id:"1",
+            username:username,
+            firstLI: true
+        }
         addNewUser(person)
+        await setTheCurrentUser(newPerson).then(
         window.location= "prototype.html"
-     }
-     
+        )
     }
+    
+    }
+async function setTheCurrentUser(pso){
+    const response = await fetch("http://localhost:5200/liu/update", {
+        method: "PATCH",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(pso),
+    })
+}
 async function addNewUser(userJson){
     const response = await fetch("http://localhost:5200/users/insert", {
         method: "POST",
@@ -72,13 +94,21 @@ async function addNewUser(userJson){
 }
 
 
-function handleInput(evt) {
+async function handleInput(evt) {
     console.log("hello")
     let username = userNameData.value;
     let password = passwordData.value;    
+    let person = {
+        id:"1",
+        username:username,
+        firstLI: true
+    }
     for(i = 0; i<usersList.length;i++){
         if(username===usersList[i]["username"] && password === usersList[i]["password"]){
-            window.location= "prototype.html"
+            await setTheCurrentUser(person).then(
+                window.location= "prototype.html"
+            )
+            //window.location= "prototype.html"
         }
     }
 }

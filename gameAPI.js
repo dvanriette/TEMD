@@ -126,16 +126,32 @@ app.post('/users/insert', async (req,res) =>{
 // })
 
 //update user
-app.patch('/patch/:id',async function (req, res) {
+app.patch('/users/:name',async function (req, res) {
     const client = new MongoClient(uri)
     try{
         const database = client.db('dbGame')
         const db = database.collection('users')
-        const id = req.params.id
+        const name = req.params.name
         const updateObject = req.body
-        await jokes.updateOne({'id'  : id}, {$set: updateObject}).then(result =>{
+        await db.updateOne({'username'  : name}, {$set: updateObject}).then(result =>{
             res.status(201).json(result)
         })
+    }catch(err){
+        console.log(err)
+    }finally{
+        client.close()
+    }
+})
+
+app.get('/users/get/:name',async function (req, res) {
+    const client = new MongoClient(uri)
+    try{
+        const database = client.db('dbGame')
+        const db = database.collection('users')
+        const name = req.params.name
+        const updateObject = req.body
+        let thU = await db.findOne({'username'  : name})
+        res.send(thU)
     }catch(err){
         console.log(err)
     }finally{
@@ -175,6 +191,38 @@ app.patch('/gd/update',async function (req, res) {
     }finally{
         client.close()
     }
+})
+
+
+app.patch('/liu/update',async function (req, res) {
+    const client = new MongoClient(uri)
+    try{
+        const database = client.db('dbGame')
+        const db = database.collection('loginUser')
+        const updateObject = req.body
+        await db.updateOne({'id'  : '1'}, {$set: updateObject}).then(result =>{
+            res.status(201).json(result)
+        })
+    }catch(err){
+        console.log(err)
+    }finally{
+        client.close()
+    }
+})
+
+app.get('/liu', async (req,res) =>{
+    const client = new MongoClient(uri)
+    try{
+        const database = client.db('dbGame')
+        const db = database.collection('loginUser')
+        let userList = await db.findOne()
+        res.send(userList)
+    }catch(err){
+        console.log(err)
+    }finally{
+        client.close()
+    }
+    
 })
 
 app.listen(port, ()=>{
