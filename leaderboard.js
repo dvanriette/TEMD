@@ -1,79 +1,126 @@
-<html>
-    <link rel='stylesheet' href='leaderboard.css'>
-    <script src="leaderboard.js"></script>
-    <title>Project Leaderboard</title>
-    <head>
+document.addEventListener('DOMContentLoaded', function () {
 
-    </head>
-    <body>
-        <h1 id='leadrHeader'>WOOOO LEADERBOARD</h1>
-        <p id='showTop'>Todays top contenders!: </p>
+    const topElements = [];
 
-        <p class='plcHolder' id='1thPlc'>1st Place</p>
-        <table id='1stleadrTable'>
-            <tr>
-                <td class='leadrName' id='1thPlcName'>1st Place Name</td>
-                <td class='score' id='1thPlcScore'>1st Place Score</td>
-            </tr>
-        </table>
+    for (let i = 1; i <= 10; i++) {
+        topElements[i] = {
+            name: document.getElementById(`${i}thPlcName`),
+            score: document.getElementById(`${i}thPlcScore`)
+        };
+    }
 
-        <p class='plcHolder' id='2thPlc'>2nd Place</p>
-        <table id='2ndleadrTable'>
-            <tr>
-                <td class='leadrName' id='2thPlcName'>2nd Place Name</td>
-                <td class='score' id='2thPlcScore'>2nd Place Score</td>
-            </tr>
-        </table>
+    const winnersArray = [];
 
-    
-        <p class='plcHolder' id='3thPlc'>3rd Place</p>
-        <table id='3rdleadrTable'>
-        <tr>
-            <td class='leadrName' id='3thPlcName'>3rd Place Name</td>
-            <td class='score' id='3thPlcScore'>3rd Place Score</td>
-        </tr>
-        </table>
+    // const playerData = [ //This json would be our player data. This is for testing
+    //     {
+    //         "username": "alice_smith",
+    //         "password": "secure123",
+    //         "guessCount": 0,
+    //         "guesses": [],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-23"
+    //     },
+    //     {
+    //         "username": "david_wilson",
+    //         "password": "p@ssword!",
+    //         "guessCount": 2,
+    //         "guesses": ["apple", "banana"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-22"
+    //     },
+    //     {
+    //         "username": "sarah_jones",
+    //         "password": "passw0rd",
+    //         "guessCount": 8,
+    //         "guesses": ["carrot", "broccoli", "lettuce", "tomato", "cucumber", "potato", "onion", "pepper"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-21"
+    //     },
+    //     {
+    //         "username": "michael_davis",
+    //         "password": "mypass123",
+    //         "guessCount": 0,
+    //         "guesses": [],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-20"
+    //     },
+    //     {
+    //         "username": "linda_adams",
+    //         "password": "lindapass",
+    //         "guessCount": 4,
+    //         "guesses": ["sun", "moon", "stars", "earth"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-19"
+    //     },
+    //     // Additional users
+    //     {
+    //         "username": "john_doe",
+    //         "password": "johndoepass",
+    //         "guessCount": 5,
+    //         "guesses": ["cat", "dog", "bird", "fish", "rabbit"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-18"
+    //     },
+    //     {
+    //         "username": "mary_jackson",
+    //         "password": "marypass",
+    //         "guessCount": 3,
+    //         "guesses": ["red", "green", "blue"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-17"
+    //     },
+    //     {
+    //         "username": "robert_smith",
+    //         "password": "robertpass",
+    //         "guessCount": 6,
+    //         "guesses": ["car", "bike", "bus", "train", "plane", "boat"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-16"
+    //     },
+    //     {
+    //         "username": "emily_jones",
+    //         "password": "emilypass",
+    //         "guessCount": 1,
+    //         "guesses": ["pizza"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-15"
+    //     },
+    //     {
+    //         "username": "james_wilson",
+    //         "password": "jamespass",
+    //         "guessCount": 7,
+    //         "guesses": ["football", "basketball", "soccer", "tennis", "golf", "baseball", "cricket"],
+    //         "won": true,
+    //         "dateOfLastLogin": "2023-08-14"
+    //     }
+    // ];
 
+    function sortWinnersByGuessCount(playerData) {
+        let sortedData = playerData.sort((a, b) => a.guessCount - b.guessCount);
 
-        <table id='leadrTable'>
-            <tr>
-                <td class='plcNum' value='4thPlc'>4th</td>
-                <td class='leadrName' id='4thPlcName'>4th Place Name</td>
-                <td class='score' id='4thPlcScore'>4th Place Score</td>
-            </tr>
-            <tr>
-                <td class='plcNum' value='5thPlc'>5th</td>
-                <td class='leadrName' id='5thPlcName'>5th Place Name</td>
-                <td class='score' id='5thPlcScore'>5th Place Score</td>
-            </tr>
-            <tr>
-                <td class='plcNum' value='6thPlc'>6th</td>
-                <td class='leadrName' id='6thPlcName'>6th Place Score</td>
-                <td class='score' id='6thPlcScore'>6th Place Score</td>
-            </tr>
-            <tr>
-                <td class='plcNum' value='7thPlc'>7th</td>
-                <td class='leadrName' id='7thPlcName'>7th Place Name</td>
-                <td class='score' id='7thPlcScore'>7th Place Score</td>
-            </tr>
-            <tr>
-                <td class='plcNum' value='8thPlc'>8th</td>
-                <td class='leadrName' id='8thPlcName'>8th Place Name</td>
-                <td class='score' id='8thPlcScore'>8th Place Score</td>
-            </tr>
-            <tr>
-                <td class='plcNum' value='9thPlc'>9th</td>
-                <td class='leadrName' id='9thPlcName'>9th Place Name</td>
-                <td class='score' id='9thPlcScore'>9th Place Score</td>
-            </tr>
-            <tr>
-                <td class='plcNum' value='10thPlc'>10th</td>
-                <td class='leadrName' id='10thPlcName'>10th Place Name</td>
-                <td class='score' id='10thPlcScore'>10th Place Score</td>
-            </tr>
-        </table>
-        <div id='homeBtn'>
-            <button onclick="window.location.href = 'prototype.html';">HOME</button>
-        </div>
-    </body>
-</html>
+        for (i = 0; i < 10 && i < playerData.length; i++) {
+            winnersArray.push(sortedData[i]);
+        }
+    }
+
+    function readArray(array = []) {
+        for (i = 0; i < array.length; i++) {
+            console.log(array[i])
+        }
+    }
+
+    function pushWinnersToLeaderboard(winners = []) {
+        for (let i = 0; i < winners.length && i < topElements.length; i++) {
+            topElements[i + 1].name.textContent = winners[i].username;
+            topElements[i+ 1].score.textContent = winners[i].guessCount;
+        }
+    }
+    async function run() {
+        sortWinnersByGuessCount(playerData);
+        pushWinnersToLeaderboard(winnersArray);
+    }
+    topElements.name = playerData[0].username;
+
+    readArray(topElements)
+    run();
+});
