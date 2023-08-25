@@ -52,18 +52,30 @@ fetchPromise.then(response => {
     };
     console.log('here')
     if(username != "" & password != ""){
-        let newPerson = {
-            id:"1",
-            username:username,
-            firstLI: true
+        if(checkIsUnique(username,password)){
+            let newPerson = {
+                id:"1",
+                username:username,
+                firstLI: true
+            }
+            addNewUser(person)
+            await setTheCurrentUser(newPerson).then(
+            window.location= "prototype.html"
+            )
         }
-        addNewUser(person)
-        await setTheCurrentUser(newPerson).then(
-        window.location= "prototype.html"
-        )
     }
     
     }
+function checkIsUnique(username,password){
+    let isuniqe = true
+    usersList.forEach(element => {
+        if(element["username"] === username || element["password"] === password){
+            isuniqe = false
+        }
+    }
+    )
+    return isuniqe
+}
 async function setTheCurrentUser(pso){
     const response = await fetch("http://localhost:5200/liu/update", {
         method: "PATCH",

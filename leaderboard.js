@@ -32,90 +32,35 @@ const top10thScore = document.getElementById('10thPlcScore');
 
 const winnersArray = [];
 
-const playerData = [ //This json would be our player data
-    {
-      "username": "alice_smith",
-      "password": "secure123",
-      "guessCount": 0,
-      "guesses": [],
-      "won": true,
-      "dateOfLastLogin": "2023-08-23"
-    },
-    {
-      "username": "david_wilson",
-      "password": "p@ssword!",
-      "guessCount": 2,
-      "guesses": ["apple", "banana"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-22"
-    },
-    {
-      "username": "sarah_jones",
-      "password": "passw0rd",
-      "guessCount": 8,
-      "guesses": ["carrot", "broccoli", "lettuce", "tomato", "cucumber", "potato", "onion", "pepper"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-21"
-    },
-    {
-      "username": "michael_davis",
-      "password": "mypass123",
-      "guessCount": 0,
-      "guesses": [],
-      "won": true,
-      "dateOfLastLogin": "2023-08-20"
-    },
-    {
-      "username": "linda_adams",
-      "password": "lindapass",
-      "guessCount": 4,
-      "guesses": ["sun", "moon", "stars", "earth"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-19"
-    },
-    // Additional users
-    {
-      "username": "john_doe",
-      "password": "johndoepass",
-      "guessCount": 5,
-      "guesses": ["cat", "dog", "bird", "fish", "rabbit"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-18"
-    },
-    {
-      "username": "mary_jackson",
-      "password": "marypass",
-      "guessCount": 3,
-      "guesses": ["red", "green", "blue"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-17"
-    },
-    {
-      "username": "robert_smith",
-      "password": "robertpass",
-      "guessCount": 6,
-      "guesses": ["car", "bike", "bus", "train", "plane", "boat"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-16"
-    },
-    {
-      "username": "emily_jones",
-      "password": "emilypass",
-      "guessCount": 1,
-      "guesses": ["pizza"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-15"
-    },
-    {
-      "username": "james_wilson",
-      "password": "jamespass",
-      "guessCount": 7,
-      "guesses": ["football", "basketball", "soccer", "tennis", "golf", "baseball", "cricket"],
-      "won": true,
-      "dateOfLastLogin": "2023-08-14"
-    }
-  ];
-  
+
+
+  var playerData = [];
+  console.log("D")
+  const date = new Date()
+  const dom = date.getDate()
+  const dateString = dom.toString()
+  console.log("a")
+  const fetchPromise = fetch("http://localhost:5200/users");
+  fetchPromise.then(response => {
+      return response.json() })
+      .then(list=>{
+          console.log("c")
+          usersForToday = []
+          usersWithoutZero = []
+          list.forEach(element => {
+            if(!(element["guessCount"] === 0)){
+                usersWithoutZero.push(element)
+            }
+        })
+          usersWithoutZero.forEach(element => {
+              if(element["dateOfLastLogin"] === dateString){
+                  usersForToday.push(element)
+              }
+          })
+          playerData = usersForToday
+          run()
+          console.log(playerData)
+        })
 function sortWinnersByGuessCount(playerData){
     let sortedData = playerData.sort((a,b) => a.guessCount - b.guessCount);
 
@@ -131,6 +76,7 @@ function sortWinnersByGuessCount(playerData){
   }
 
   function pushWinnersToLeaderboard(winners = []){
+    try{
           top1stName.textContent = winners[0].username;
           top1stScore.textContent = winners[0].guessCount;
 
@@ -160,6 +106,9 @@ function sortWinnersByGuessCount(playerData){
 
           top10thName.textContent = winners[9].username;
           top10thScore.textContent = winners[9].guessCount;
+  }catch{
+    console.log("not enough users")
+  }
     }
 
   async function run(){
@@ -167,6 +116,6 @@ function sortWinnersByGuessCount(playerData){
     pushWinnersToLeaderboard(winnersArray);
   }
 
-  run();
+  //run();
 //readPlayers(winnersArray);
 });
