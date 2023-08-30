@@ -1,3 +1,6 @@
+// on login set add user to new collection in database
+//at start of this page grab user data and immedietly delete it
+
 var animalList =[
         {
             "id": 1,
@@ -30,12 +33,26 @@ var animalList =[
         //     "hint": "the most common pet in the world"
         // }
     ]
+
+user = {
+    "username": "dvanriette",  
+    "password": "dvanriette03!",  
+    "guessCount": 0, 
+    "guesses": [],  
+    "won": false,  
+    "dateOfLastLogin": "" 
+}
+
+gueses = user['guessCount']
+
+shouldAdd = true
 //const axios = require('axios');
-guesses = 1
+//guesses = 1
 guessThreshold = 5
 let won = false
 var answer = animalList[0]
 let hintBox = document.getElementById("hintbox")
+let title = document.getElementById("center")
 
 const incorrectNames = []
 const correctDiets = []
@@ -47,6 +64,11 @@ const incorrectHabitats = []
 const correctSpecies = []
 const incorrectSpecies = [] 
 const date = new Date()
+cui = {
+    id:"1",
+    username:"",
+    firstLI:""
+}
 
 let dom= date.getDate()
 dt2 = {}
@@ -62,8 +84,9 @@ async function getAnimals(){
     fetchPromise.then(response => {
         return response.json() })
         .then(animals=>{
-            //console.log(animals)
             animalList = animals
+            //console.log(animals)
+            
             const datePromise = fetch("http://localhost:5200/gd");
             datePromise.then(response => {
             return response.json() })
@@ -77,7 +100,7 @@ async function getAnimals(){
                 }else{
                     console.log(dateString)
                     console.log(dt2['currentDate'])
-                    console.log('else')
+                    console.log('newAnimal')
                     const newAnimalPromise = fetch("http://localhost:5200/gd");
                     newAnimalPromise.then(response => {
                     return response.json() })
@@ -90,7 +113,37 @@ async function getAnimals(){
                     
                     })
                 }
+                const fetchlui = fetch("http://localhost:5200/liu");
+                fetchlui.then(response => {
+                return response.json() })
+                .then(currentUser=>{
+                    cui["username"] = currentUser["username"]
+                    cui["id"] = currentUser["id"]
+                    cui["firstLI"] = currentUser["firstLI"]
+                    if(!cui["firstLI"]){
+                        window.location= "Login.html"
+                    }
+                    else{
+                    cui["firstLI"] = false
+                    setTheCurrentUser(cui)
+                    const fetchcui = fetch("http://localhost:5200/users/get/" + cui["username"]);
+                    fetchcui.then(response2 => {
+                    return response2.json() })
+                        .then(theU=>{
+                    user["username"] = theU["username"]
+                    user["password"] = theU["password"]
+                    user["guessCount"] = theU["guessCount"]
+                    user["guesses"] = theU["guesses"]
+                    user["won"] = theU["won"]
+                    user["dateOfLastLogin"] = theU["dateOfLastLogin"]
+                    
+                    onLogIn()
+                    console.log(user)
             })
+            }
+            })
+            })
+            
             button.addEventListener('click', () => {
                 if(!won){
                 console.log("input was")
@@ -100,9 +153,25 @@ async function getAnimals(){
                 }
             })
             
+            
         })
     
      //answer = animalList[Math.floor(Math.random() * animalList.length)]
+}
+
+async function setTheCurrentUser(pso){
+    const response = await fetch("http://localhost:5200/liu/update", {
+        method: "PATCH",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(pso),
+    })
 }
 //let data = {
 //    currentDate: dateString,
@@ -125,23 +194,37 @@ async function postData() {
         }
     //let url = "http://localhost:5200/gd/update"
 
-    // Default options are marked with *
     const response = await fetch("http://localhost:5200/gd/update", {
-        method: "PATCH", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
+        method: "PATCH",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
         headers: {
         "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: JSON.stringify(data), // body data type must match "Content-Type" header
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(data),
     })
     
-    //console.log(response.json())
-    //return response.json(); // parses JSON response into native JavaScript objects
+}
+
+async function updateUser(){
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    const response = await fetch("http://localhost:5200/users/"+user["username"], {
+        method: "PATCH",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(user),
+    })
+    console.log(user)
+    
 }
 
 
@@ -166,6 +249,11 @@ const guessesDiv = document.getElementById("guesses")
 
 
 function checkGuess(guess,answer){
+    if(shouldAdd){
+        user['guesses'].push(guess['name'])
+        user['guessCount'] = user['guessCount'] + 1
+        updateUser()
+    }
     let matches = [false,false,false,false,false,false]
     if(guess["name"] === answer["name"]){
         for (let i = 0; i < matches.length; i++) {
@@ -174,11 +262,11 @@ function checkGuess(guess,answer){
         winGame()
         //winGame //user.setWon(true)
     }else {
-        if(guesses > guessThreshold - 1 ){
+        if(user['guessCount'] > guessThreshold - 1 ){
             hintBox.innerHTML = answer["hint"]
             hintBox.style.backgroundColor="yellow"
         }else{
-            hintBox.innerHTML = "?<br>gueses until hint: " + (guessThreshold - guesses)
+            hintBox.innerHTML = "?<br>gueses until hint: " + (guessThreshold - user['guessCount'])
         }
         if (guess["diet"] === answer["diet"]){
             matches[1] = true
@@ -220,6 +308,7 @@ function checkGuess(guess,answer){
 }
 
 function setGuessAttributes(animal,matches){
+    console.log(user)
     guesses++
     let nameBox = document.getElementById("name")
     let dietBox = document.getElementById("diet")  // finish this
@@ -331,10 +420,33 @@ function ruleSystem(quess,CorrectAnswer){
 }
 
 function winGame(){
+    user['won'] = true
+    updateUser()
     won = true
     let winText = document.createElement("div")
     winText.className = "parent"
     winText.id = "current"
-    winText.innerHTML = "Congrats! You guessed it in " + guesses + " tries"
+    winText.innerHTML = "Congrats! You guessed it in " + user['guessCount'] + " tries"
     document.body.appendChild(winText)
     }
+
+
+function onLogIn(){
+    title.innerHTML = "Welcome to Animaldle, " + user["username"]
+    if(dateString === user["dateOfLastLogin"]){
+        console.log("has logged in today")
+        shouldAdd = false
+        user["guesses"].forEach(element => { // doubles all guesses
+            ruleSystem(element, answer)
+        })
+    }else{
+        console.log("hasnt logged in today")
+        console.log(user["dateOfLastLogin"])
+        user["dateOfLastLogin"] = dateString
+        user["guesses"] = []
+        user["won"] = false
+        user["guessCount"] = 0
+        updateUser()
+    }
+    shouldAdd = true
+}

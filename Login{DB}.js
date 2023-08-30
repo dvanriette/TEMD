@@ -50,9 +50,11 @@ fetchPromise.then(response => {
             won: false,
             dateOfLastLogin: ""
      };
-     if(!username === "" && !password=== ""){
+     if(username != "" && password != ""){
+        if(usersList["username"] != username || usersList["password"] !=password){
         addNewUser(person)
         window.location= "prototype.html"
+        }
      }
      
     }
