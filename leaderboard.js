@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const topElements = [];
+    const winnersArray = [];
 
     for (let i = 1; i <= 10; i++) {
         topElements[i] = {
@@ -8,9 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
             score: document.getElementById(`${i}thPlcScore`)
         };
     }
-
-    const winnersArray = [];
-
+    
     // const playerData = [ //This json would be our player data. This is for testing
     //     {
     //         "username": "Example Name",
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
         sortWinnersByGuessCount(playerData);
         pushWinnersToLeaderboard(winnersArray);
     }
-    topElements.name = playerData[0].username;
 
     readArray(topElements)
     run();
