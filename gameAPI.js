@@ -83,9 +83,9 @@ app.post('/users/insert', async (req,res) =>{
     const client = new MongoClient(uri)
     try{
         const database = client.db('dbGame')
-        const jokes = database.collection('users')
+        const users = database.collection('users')
         const recievedUser = req.body
-        await jokes.insertOne(recievedUser).then(result =>{
+        await users.insertOne(recievedUser).then(result =>{
             res.status(201).json(result)
         })
     }catch(err){
@@ -96,34 +96,6 @@ app.post('/users/insert', async (req,res) =>{
     
 })
 
-//alternate insert user
-// app.post('/users/insert/:un/:pw', async (req,res) =>{
-//     const client = new MongoClient(uri)
-//     try{
-//         const date = new Date();
-//         const database = client.db('dbGame')
-//         const jokes = database.collection('users')
-//         const username = req.params.un
-//         const password = req.params.pw
-
-//         user = {
-//             "username":username,
-//             "password":password,
-//             "guessCount": 0,
-//             "guesses": [],
-//             "won": false,
-//             "dateOfLastLogin": date.getDate()
-//         }
-//         await jokes.insertOne(recievedUser).then(result =>{
-//             res.status(201).json(result)
-//         })
-//     }catch(err){
-//         console.log(err)
-//     }finally{
-//         client.close()
-//     }
-    
-// })
 
 //update user
 app.patch('/users/:name',async function (req, res) {
